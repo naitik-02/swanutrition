@@ -22,22 +22,19 @@ export async function PUT(req, { params }) {
 
     const formData = await req.formData();
     const settingId = params.id;
-    const tagline = formData.get("tagline");
+
     const title = formData.get("title");
-    const search_engine_visibility = formData.get("searchEnginevisibility");
     const open = formData.get("openTime");
     const close = formData.get("closeTime");
-    const helpline = formData.get("helpline");
-    const email = formData.get("email");
+
     const storeStatus = formData.get("storeStatus");
-    const paymentMethod = formData.get("paymentMethod");
-    const whatsapp = formData.get("whatsapp");
-    const helpCenterLink = formData.get("helpCenterLink");
-    const footerDescription1 = formData.get("footerDescription1");
-    const footerDescription2 = formData.get("footerDescription2");
-    const footerYear = formData.get("footerYear");
-    const socials = JSON.parse(formData.get("socials") || "[]");
+
     const logo = formData.get("logo");
+
+    const freeDeliveryThreshold = formData.get("free_delivery_threshold");
+    const platformFee = formData.get("platform_fee");
+    const defaultDeliveryCharge = formData.get("default_delivery_charge");
+    const distanceSlabs = JSON.parse(formData.get("distance_slabs") || "[]");
 
     let logoUrl = undefined;
     if (logo && typeof logo === "object") {
@@ -48,27 +45,26 @@ export async function PUT(req, { params }) {
     const updated = await Setting.findByIdAndUpdate(
       settingId,
       {
-        search_engine_visibility,
         title,
-        tagline,
-        helpline,
-        email,
-        payment_method: paymentMethod,
+
         store_status: storeStatus,
         open_time: open,
         close_time: close,
-        whatsapp,
-        helpCenterLink,
-        footerDescription1,
-        footerDescription2,
-        footerYear,
-        socials,
+
+        free_delivery_threshold: Number(freeDeliveryThreshold),
+        platform_fee: Number(platformFee),
+        default_delivery_charge: Number(defaultDeliveryCharge),
+        distance_slabs: distanceSlabs,
         ...(logoUrl && { logo: logoUrl }),
       },
-      { new: true }
+      { new: true },
     );
 
-    await logActivity(admin, "UPDATE_SETTING", `updated setting`);
+    await logActivity(
+      admin,
+      "UPDATE_SETTING",
+      `updated general and delivery settings`,
+    );
 
     return NextResponse.json({ message: "Setting updated", data: updated });
   } catch (error) {

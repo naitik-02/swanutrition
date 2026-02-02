@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const UserContext = createContext();
 
@@ -253,39 +254,45 @@ export const UserProvider = ({ children }) => {
   };
 
   const dashboardLogin = async (email, password, selectedRole, router) => {
-    try {
-      setBtnLoading(true);
-      const { data } = await axios.post(
-        "/api/Admin/user/login/",
-        { email, password, selectedRole },
-        { withCredentials: true },
-      );
+  try {
+    setBtnLoading(true);
 
-      setDashUser(data.user);
-      setIsDashAuth(true);
+    const { data } = await axios.post(
+      "/api/Admin/user/login/",
+      { email, password, selectedRole },
+      { withCredentials: true }
+    );
 
-      localStorage.setItem(
-        "adminAuth",
-        JSON.stringify({
-          user: data.user,
-          timestamp: Date.now(),
-        }),
-      );
+    Cookies.set("adminTokenClient", data.token, {
+      expires: 7,
+      secure: true,
+      sameSite: "lax",
+    });
 
-      toast.success("Admin logged in successfully");
+    setDashUser(data.user);
+    setIsDashAuth(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 300));
+    localStorage.setItem(
+      "adminAuth",
+      JSON.stringify({
+        user: data.user,
+        timestamp: Date.now(),
+      })
+    );
 
-      router.push("/admin");
+    toast.success("Admin logged in successfully");
 
-      return { success: true };
-    } catch (error) {
-      toast.error(error.response?.data?.error || "Admin login failed");
-      return { success: false };
-    } finally {
-      setBtnLoading(false);
-    }
-  };
+    router.push("/admin");
+
+    return { success: true };
+
+  } catch (error) {
+    toast.error(error.response?.data?.error || "Admin login failed");
+    return { success: false };
+  } finally {
+    setBtnLoading(false);
+  }
+};
 
   const logoutAdmin = async (router) => {
     try {

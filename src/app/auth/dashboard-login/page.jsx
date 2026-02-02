@@ -39,12 +39,9 @@ const DashboardLogin = () => {
   const roles = [
     { id: "admin", name: "Administrator", icon: Settings },
     { id: "manager", name: "Manager", icon: BarChart3 },
-    { id: "user", name: "User", icon: User },
-   
   ];
 
   
-
   const handleLogin = async () => {
     if (!email || !password) {
       alert("Please fill in all fields");
@@ -65,18 +62,15 @@ const DashboardLogin = () => {
     }
   };
 
-
-
   const selectedRoleData = roles.find((r) => r.id === selectedRole);
   const SelectedIcon = selectedRoleData?.icon;
 
   if (adminLoading) return <Loading />;
 
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
-     <Link
-        href="/" 
+      <Link
+        href="/"
         className="fixed top-4 left-4 p-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition"
       >
         <Home className="w-5 h-5 text-gray-600" />

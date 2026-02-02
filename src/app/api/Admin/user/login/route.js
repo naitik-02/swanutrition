@@ -31,28 +31,18 @@ export async function POST(req) {
       );
     }
 
-    // const isMatch = await bcrypt.compare(password, user.password);
-    // if (!isMatch) {
-    //   return NextResponse.json(
-    //     { error: "Invalid credentials" },
-    //     { status: 401 }
-    //   );
-    // }
-
-    // Create token
     const adminToken = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SEC,
-      {
-        expiresIn: "7d",
-      }
+      { expiresIn: "7d" }
     );
 
-    await logActivity(email, `LOGGED_IN_USER`, `user logged-in: ${email}`);
+    await logActivity(email, "LOGGED_IN_USER", `user logged-in: ${email}`);
 
     const response = NextResponse.json(
       {
         message: "Login successful",
+        token: adminToken, // 👈 js-cookie ke liye
         user: {
           ...user.toObject(),
           password: undefined,
@@ -63,13 +53,14 @@ export async function POST(req) {
 
     response.cookies.set("adminToken", adminToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-       sameSite: "lax",
+      secure: true,
+      sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
+
   } catch (error) {
     console.error("Admin Login Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

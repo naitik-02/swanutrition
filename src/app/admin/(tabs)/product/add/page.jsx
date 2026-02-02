@@ -10,7 +10,6 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-import "react-quill-new/dist/quill.snow.css";
 
 import BasicInformation from "@/components/(admin)/(product)/BasicInformation";
 import CategorySection from "@/components/(admin)/(product)/CategorySection";

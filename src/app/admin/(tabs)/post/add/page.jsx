@@ -13,8 +13,12 @@ import {
   Save,
   Eye,
 } from "lucide-react";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 import { useRouter } from "next/navigation";
 
 import { usePostCategoryContext } from "@/context/postCategory";

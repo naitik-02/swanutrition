@@ -3,8 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, List, Search, Save, X, Tag } from "lucide-react";
 import { useTagContext } from "@/context/productTag";
 
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 const Page = () => {
   const [tagName, setTagName] = useState("");

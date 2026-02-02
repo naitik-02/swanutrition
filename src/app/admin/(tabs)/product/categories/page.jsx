@@ -16,8 +16,12 @@ import {
 import { useCategoryContext } from "@/context/category";
 import { useSubcategoryContext } from "@/context/subcategory";
 
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 const CategoryManagement = () => {
   const [categoryName, setCategoryName] = useState("");

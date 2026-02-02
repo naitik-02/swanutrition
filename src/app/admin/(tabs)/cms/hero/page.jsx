@@ -12,8 +12,9 @@ import {
   Image,
   Monitor,
 } from "lucide-react";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import { useHeroSliderContext } from "@/context/heroslider";
 import { useCategoryContext } from "@/context/category";
 import Loading from "@/components/loading";
@@ -101,10 +102,6 @@ const HeroCategorySliderPage = () => {
   };
 
   const addHeroSlider = async () => {
-   
-
-   
-
     if (!url) {
       alert("Please Fill Url");
       return;
@@ -135,10 +132,6 @@ const HeroCategorySliderPage = () => {
   };
 
   const saveEditingSlider = async () => {
-   
-
-  
-
     if (!url) {
       alert("Please Fill a Url");
       return;
@@ -182,17 +175,15 @@ const HeroCategorySliderPage = () => {
       slider.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       slider.category?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       slider.url?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      slider.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      slider.description?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const sortedSliders = filteredSliders.sort(
-    (a, b) => (a.order || 0) - (b.order || 0)
+    (a, b) => (a.order || 0) - (b.order || 0),
   );
 
   if (loading) {
-    return (
-   <Loading/>
-    );
+    return <Loading />;
   }
 
   return (
@@ -276,30 +267,29 @@ const HeroCategorySliderPage = () => {
                     theme="snow"
                     value={description}
                     onChange={(content) => {
-                      
                       setDescription(content);
                     }}
                     modules={{
-                    toolbar: [
-                      [{ header: [1, 2, false] }],
-                      ["bold", "italic", "underline", "strike"],
-                      ["link", "image"],
-                      [{ list: "ordered" }],
-                      ["clean"],
-                    ],
-                  }}
-                  formats={[
-                    "header",
-                    "bold",
-                    "italic",
-                    "underline",
-                    "strike",
-                    "blockquote",
-                    "list",
-                    
-                    "link",
-                    "image",
-                  ]}
+                      toolbar: [
+                        [{ header: [1, 2, false] }],
+                        ["bold", "italic", "underline", "strike"],
+                        ["link", "image"],
+                        [{ list: "ordered" }],
+                        ["clean"],
+                      ],
+                    }}
+                    formats={[
+                      "header",
+                      "bold",
+                      "italic",
+                      "underline",
+                      "strike",
+                      "blockquote",
+                      "list",
+
+                      "link",
+                      "image",
+                    ]}
                   />
                 </div>
 
@@ -406,8 +396,8 @@ const HeroCategorySliderPage = () => {
                     {btnLoading
                       ? "Saving..."
                       : editingSlider
-                      ? "Update Slider"
-                      : "Add Slider"}
+                        ? "Update Slider"
+                        : "Add Slider"}
                   </button>
 
                   {editingSlider && (
@@ -524,7 +514,7 @@ const HeroCategorySliderPage = () => {
                                         slider.description.length > 100
                                           ? slider.description.substring(
                                               0,
-                                              100
+                                              100,
                                             ) + "..."
                                           : slider.description,
                                     }}

@@ -12,8 +12,12 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 import BasicInformation from "@/components/(admin)/(product)/BasicInformation";
 import CategorySection from "@/components/(admin)/(product)/CategorySection";

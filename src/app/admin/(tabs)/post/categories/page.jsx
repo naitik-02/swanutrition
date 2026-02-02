@@ -15,8 +15,12 @@ import {
 } from "lucide-react";
 import { usePostCategoryContext } from "@/context/postCategory";
 import { usePostSubCategoryContext } from "@/context/postSubCategory";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 const PostCategoryManagement = () => {
   const [categoryName, setCategoryName] = useState("");

@@ -14,8 +14,12 @@ import {
 } from "lucide-react";
 import { useBrandContext } from "@/context/brand";
 
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 const Page = () => {
   const [brandName, setBrandName] = useState("");

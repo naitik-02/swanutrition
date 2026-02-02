@@ -4,8 +4,12 @@ import React, { useEffect, useState } from "react";
 import {
   X, FileText, Globe, Eye, Edit3, Save, Tag, Hash, Image as Img, Upload
 } from "lucide-react";
-import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+  () => import("react-quill-new"),
+  { ssr: false }
+);
 
 export default function QuickEditPostPopup({
   isOpen,
